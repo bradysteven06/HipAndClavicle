@@ -18,6 +18,8 @@ namespace HipAndClavicle.Controllers
             return View(lvm);
         }
 
+        //TODO
+        //Add after Identity is added
         /*[AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM lvm)
