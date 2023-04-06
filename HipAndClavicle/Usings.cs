@@ -5,7 +5,7 @@ global using System.Diagnostics;
 global using System;
 
 global using HipAndClavicle;
-//global using HipAndClavicle.ViewModels;
+global using HipAndClavicle.ViewModels;
 global using HipAndClavicle.Controllers;
 global using HipAndClavicle.Models;
 global using HipAndClavicle.Models.Enums;
@@ -25,5 +25,5 @@ global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Http.Features;
 global using Microsoft.AspNetCore.Mvc.RazorPages;
 global using Microsoft.AspNetCore.Authentication;
-global using Microsoft.AspNetCore.Identity.UI;
+//global using Microsoft.AspNetCore.Identity.UI;
 global using Microsoft.Extensions.Logging;
