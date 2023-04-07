@@ -1,5 +1,4 @@
-﻿using HipAndClavicle.Models.Enums;
-using Color = HipAndClavicle.Models.Color;
+﻿using Color = HipAndClavicle.Models.Color;
 
 namespace HipAndClavicle.Models;
 
