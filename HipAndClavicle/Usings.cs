@@ -9,7 +9,7 @@ global using HipAndClavicle.ViewModels;
 global using HipAndClavicle.Controllers;
 global using HipAndClavicle.Models;
 global using HipAndClavicle.Models.Enums;
-//global using HipAndClavicle.Data;
+global using HipAndClavicle.Data;
 
 global using AspNetCoreHero;
 global using AspNetCoreHero.ToastNotification.Extensions;
@@ -27,3 +27,8 @@ global using Microsoft.AspNetCore.Mvc.RazorPages;
 global using Microsoft.AspNetCore.Authentication;
 //global using Microsoft.AspNetCore.Identity.UI;
 global using Microsoft.Extensions.Logging;
+global using System.Runtime.InteropServices;
+global using Microsoft.Extensions.DependencyInjection;
+
+global using Pomelo.EntityFrameworkCore;
+global using Microsoft.Data.Sqlite;
