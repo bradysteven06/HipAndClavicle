@@ -23,4 +23,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Views\Admin\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Admin\" />
+  </ItemGroup>
 </Project>
