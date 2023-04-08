@@ -6,13 +6,16 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
 
     }
-    public int ColorId { get; set; }
     public DbSet<Color> Colors { get; set; }
     public DbSet<Image> Images { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Review> Reviews { get; set; }
+    public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+    public DbSet<Color> NamedColors { get; set; }
+    public DbSet<AdminSettings> Settings { get; set; }
     public DbSet<Listing> Listings { get; set; }
-    public DbSet<Order> Order { get; set; }
-    public DbSet<Product> Product { get; set; }
-    public DbSet<Review> Review { get; set; }
-    public DbSet<ShoppingCart> ShoppingCart { get; set; }
+    public DbSet<Address> AddressBook { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
 }
 

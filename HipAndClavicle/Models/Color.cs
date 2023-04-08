@@ -11,16 +11,16 @@ public class Color
     public (int, int, int) RGB
     {
 
-        get => (_red, _green, _blue);
-        set => (_red, _green, _blue) = value;
+        get => (Red, Green, Blue);
+        set => (Red, Green, Blue) = value;
     }
 
     [Range(0, 255)]
-    public int _red  = 0;
+    public int Red { get; set; } = 0;
     [Range(0, 255)]
-    public int _blue = 0;
+    public int Blue { get; set; } = 0;
     [Range(0, 255)]
-    public int _green = 0;
+    public int Green { get; set; } = 0;
 
 }
 

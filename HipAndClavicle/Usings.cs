@@ -32,3 +32,6 @@ global using Microsoft.Extensions.DependencyInjection;
 
 global using Pomelo.EntityFrameworkCore;
 global using Microsoft.Data.Sqlite;
+global using Microsoft.SqlServer;
+
+global using AspNetCoreHero.ToastNotification.Abstractions;
