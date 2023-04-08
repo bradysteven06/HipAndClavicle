@@ -2,23 +2,41 @@ var builder = WebApplication.CreateBuilder(args);
 string? connectionString;
 // Add services to the container.
 
+#region On Windows
+
 if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 {
     connectionString = builder.Configuration.GetConnectionString("MYSQL_CONNECTION");
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseMySql(connectionString, MySqlServerVersion.Parse("mysql-8.0")));
-
 }
+
+#endregion
+
+#region On Mac
+
 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && builder.Environment.IsDevelopment())
 {
     connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlite(connectionString));
 }
-builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+
+#endregion
+
+builder.Services.AddTransient<IHipRepo, HipRepo>();
+
+#region Identity
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => 
+    options.SignIn.RequireConfirmedAccount = false)
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+#endregion
+
+#region Toast Notifications
 
 builder.Services.AddNotyf(configure =>
 {
@@ -28,8 +46,12 @@ builder.Services.AddNotyf(configure =>
     configure.Position = NotyfPosition.TopRight;
 });
 
+#endregion
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

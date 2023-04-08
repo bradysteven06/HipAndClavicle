@@ -1,10 +1,19 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿
 
 namespace HipAndClavicle.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly INotyfService _toast;
+
+        public AccountController(IServiceProvider services, ApplicationDbContext context)
+        {
+            _toast = services.GetRequiredService<INotyfService>();
+            _signInManager = services.GetRequiredService<SignInManager<AppUser>>();
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -20,7 +29,7 @@ namespace HipAndClavicle.Controllers
 
         //TODO
         //Add after Identity is added
-        /*[AllowAnonymous]
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM lvm)
         {
@@ -40,6 +49,6 @@ namespace HipAndClavicle.Controllers
 
             ModelState.AddModelError("", "Invalid username/password.");
             return View(lvm);
-        }*/
+        }
     }
 }

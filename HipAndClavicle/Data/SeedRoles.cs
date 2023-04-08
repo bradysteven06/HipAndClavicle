@@ -28,14 +28,16 @@ public static class SeedRoles
         if (await roleManager.FindByNameAsync("Customer") is null)
         {
             await roleManager.CreateAsync(new IdentityRole("Customer"));
-        }
-        var devin = await userManager.FindByNameAsync("dfreem987");
-        var steven = await userManager.FindByNameAsync("steven123");
-        var michael = await userManager.FindByNameAsync("michael123");
+            var devin = await userManager.FindByNameAsync("dfreem987");
+            var steven = await userManager.FindByNameAsync("steven123");
+            var michael = await userManager.FindByNameAsync("michael123");
+            var miah = await userManager.FindByNameAsync("nehemiah123");
 
-        await userManager.AddToRoleAsync(devin, "Customer");
-        await userManager.AddToRoleAsync(michael, "Customer");
-        await userManager.AddToRoleAsync(steven, "Customer");
+            await userManager.AddToRoleAsync(devin, "Customer");
+            await userManager.AddToRoleAsync(michael, "Customer");
+            await userManager.AddToRoleAsync(steven, "Customer");
+            await userManager.AddToRoleAsync(miah, "Customer");
+        }
     }
 }
 
