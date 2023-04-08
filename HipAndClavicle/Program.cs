@@ -1,12 +1,43 @@
 var builder = WebApplication.CreateBuilder(args);
-
+string? connectionString;
 // Add services to the container.
-builder.Services.AddControllersWithViews();
 
+if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+{
+    connectionString = builder.Configuration.GetConnectionString("MYSQL_CONNECTION");
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseMySql(connectionString, MySqlServerVersion.Parse("mysql-8.0")));
+
+}
+else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && builder.Environment.IsDevelopment())
+{
+    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlite(connectionString));
+}
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddNotyf(configure =>
+{
+    configure.DurationInSeconds = 4;
+    configure.HasRippleEffect = true;
+    configure.IsDismissable = true;
+    configure.Position = NotyfPosition.TopRight;
+});
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    app.UseMigrationsEndPoint();
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -18,10 +49,22 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseNotyf();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    await SeedData.Init(services);
+    await SeedRoles.SeedCustomerRole(services);
+    await SeedRoles.SeedAdminRole(services);
+}
 
 app.Run();
+
