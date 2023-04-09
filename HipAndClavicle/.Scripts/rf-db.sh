@@ -12,10 +12,10 @@ dotnet ef database drop -f
 
 # Remove the last migration 
 
-dotnet ef migrations remove 
+dotnet ef migrations remove --no-build
 
 # Add a new migration with the user input as the name 
-dotnet ef migrations add $migration_name 
+dotnet ef migrations add $migration_name --no-build 
 
 # Update the database with the new migration 
 dotnet ef database update

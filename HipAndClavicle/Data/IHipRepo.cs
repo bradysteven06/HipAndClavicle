@@ -7,6 +7,7 @@
         public Task DeleteOrderAsync(Order order);
         public Task DeleteProductAsync(Product product);
         public Task<List<Order>> GetAdminCurrentOrdersAsync();
+        public Task<List<OrderItem>> GetOrderItemsAsync();
         public Task<List<Product>> GetAvailableProductsAsync();
         public Task<Order?> GetOrderById(int id);
         public Task<Product> GetProductById(int id);

@@ -3,6 +3,20 @@
 ## OldBusiness
 
 **What have you been working on?**
+
+- Devin
+<br />
+<br />
+- Michael
+<br />
+<br />
+- Nehemiah
+<br />
+<br />
+- Steven
+<br />
+<br />
+
 **What do you have left**
 **Does it look like you will meet the deadline? what do you need to meet the deadline?**
 

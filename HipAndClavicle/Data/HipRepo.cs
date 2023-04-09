@@ -97,8 +97,11 @@ namespace HipAndClavicle.Data
                 .Include(oi => oi.ItemColor)
                 .FirstAsync(p => p.OrderItemId.Equals(id));
 
-
-        public async Task<List<OrderItem>> GetAvailableOrderItemsAsync() =>
+        /// <summary>
+        /// gets all the <see cref="OrderItem"/>'s in all of the orders stored in the database.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<OrderItem>> GetOrderItemsAsync() =>
             await _context.OrderItems
                 .Include(oi => oi.Item)
                 .Include(oi => oi.ItemColor)

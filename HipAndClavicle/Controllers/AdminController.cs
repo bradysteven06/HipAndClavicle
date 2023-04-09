@@ -22,7 +22,7 @@ public class AdminController : Controller
         mvm.CurrentOrders = await _repo.GetAdminCurrentOrdersAsync();
         foreach (var order in mvm.CurrentOrders)
         {
-            order.Items = 
+            order.Items = await _repo.GetOrderItemsAsync();
         }
         
         return View(mvm);
