@@ -84,8 +84,8 @@ Due: Sunday, April 9, 2023, 11:59 PM
 
 ## Team TODO's
 
-- [ ] finish assigning story points to all the items.
-- [ ] Create a burndown chart
+- [X] finish assigning story points to all the items.
+- [ ] Consult a burndown chart on Jira
 - [ ] Add `PaymentInfoSaved` to `User` model
 
 ## Questions for the Team
