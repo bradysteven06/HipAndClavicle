@@ -16,17 +16,6 @@
     </thead>
     @foreach (Order order in Model.CurrentOrders)
     {
-        @foreach (OrderItem item in order.Items)
-        {
-            <tr class="table table-secondary">
-                <td>@item.Item.QuantityOnHand</td>
-                <td>@item.Item.QuantityOrdered</td>
-                <td>@item.Item.Category</td>
-                <td>@item.IsPulled</td>
-                <td>@item.IsCut</td>
-                <td>@item.IsFolded</td>
-                <td>@item.IsStickered</td>
-            </tr>
-        }
+       @Html.DisplayFor(model => model.)
     }
 </table>

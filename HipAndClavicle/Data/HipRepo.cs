@@ -27,10 +27,11 @@ namespace HipAndClavicle.Data
 
         public async Task<List<Order>> GetAdminCurrentOrdersAsync()
         {
-            return await _context.Orders
+            var orders = await _context.Orders
                 .Include(o => o.Items)
+                .ThenInclude(oi => oi.Item)
                 .Where(o => o.IsShipped.Equals(false)).ToListAsync();
-            
+            return orders;
         }
 
         public async Task UpdateOrderAsync(Order order)
@@ -79,6 +80,42 @@ namespace HipAndClavicle.Data
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
         }
+
+        #endregion
+
+        #region OrderItems
+
+        public async Task CreateOrderItemAsync(OrderItem orderItem)
+        {
+            await _context.OrderItems.AddAsync(orderItem);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<OrderItem> GetOrderItemById(int id) =>
+            await _context.OrderItems
+                .Include(oi => oi.Item)
+                .Include(oi => oi.ItemColor)
+                .FirstAsync(p => p.OrderItemId.Equals(id));
+
+
+        public async Task<List<OrderItem>> GetAvailableOrderItemsAsync() =>
+            await _context.OrderItems
+                .Include(oi => oi.Item)
+                .Include(oi => oi.ItemColor)
+            .ToListAsync();
+
+        public async Task UpdateOrderItemAsync(OrderItem orderItem)
+        {
+            _context.OrderItems.Update(orderItem);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteOrderItemAsync(OrderItem orderItem)
+        {
+            _context.OrderItems.Remove(orderItem);
+            await _context.SaveChangesAsync();
+        }
+
 
         #endregion
     }

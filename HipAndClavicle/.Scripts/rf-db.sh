@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export alias refresh="sh .Scripts/rf-db.sh"
-
 current=$(pwd)
 
 cd $current

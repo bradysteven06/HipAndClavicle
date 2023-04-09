@@ -84,11 +84,6 @@ using (var scope = app.Services.CreateAsyncScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
     await SeedData.Init(services, context);
-    await SeedData.SeedUsers();
-    await SeedData.SeedColors();
-    await SeedData.SeedProducts();
-    await SeedData.SeedItems();
-    await SeedData.SeedOrders();
     await SeedRoles.SeedCustomerRole(services);
     await SeedRoles.SeedAdminRole(services);
 }
