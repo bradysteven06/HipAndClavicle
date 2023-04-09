@@ -1,24 +1,5 @@
 # Sprint 1 - 9/3 - 9/16
 
-## OldBusiness
-
-**What have you been working on?**
-
-- Devin
-<br />
-<br />
-- Michael
-<br />
-<br />
-- Nehemiah
-<br />
-<br />
-- Steven
-<br />
-<br />
-
-**What do you have left**
-**Does it look like you will meet the deadline? what do you need to meet the deadline?**
 
 ## Assignments
 
@@ -78,7 +59,6 @@ Due: Sunday, April 9, 2023, 11:59 PM
 
 **Individual Progress Report 1 Assignment**
 Due: Sunday, April 9, 2023, 11:59 PM
-
 
 ---
 
