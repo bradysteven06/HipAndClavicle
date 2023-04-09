@@ -353,3 +353,4 @@ appsettings.*
 .DS_Store
 Migrations/
 
+app.db*

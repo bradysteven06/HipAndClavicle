@@ -1,10 +1,14 @@
-# Hip and Clavicle
+# Sprint 1 - 9/3 - 9/16
 
-## Sprint 1
+## OldBusiness
 
-### Assignments
+**What have you been working on?**
+**What do you have left**
+**Does it look like you will meet the deadline? what do you need to meet the deadline?**
 
-#### Admin Product View
+## Assignments
+
+### Admin Product View
 
 Devin
 
@@ -12,7 +16,7 @@ Devin
 - Color Options
 - Image upload
 
-#### NavBar / _Layout.css
+### NavBar / _Layout.css
 
 Nehemiah
 
@@ -24,7 +28,7 @@ Nehemiah
   - footer
   - logo (*a class="nav-brand"*)
 
-#### Register/Login Views
+### Register/Login Views
 
 Steven
 
@@ -34,17 +38,40 @@ Steven
 - css
 - buttons
 
-#### User Product View
+### User Product View
 
 Michael
 
-- Browse Products
+- Browse Products - customer side
 
-### Team TODO's
+---
+
+## New Business
+
+### What's Next?
+
+**When is the next sprint planning meeting?**
+*Options*
+
+- Wednesday 9/12
+- Thursday 9/13
+- Friday 9/14
+
+**Due Dates** for this sprint
+
+**Team Git Repository & Jira Project Assignment**
+Due: Sunday, April 9, 2023, 11:59 PM
+
+**Individual Progress Report 1 Assignment**
+Due: Sunday, April 9, 2023, 11:59 PM
+
+
+---
+
+## Team TODO's
 
 - [ ] finish assigning story points to all the items.
 - [ ] Create a burndown chart
 - [ ] Add `PaymentInfoSaved` to `User` model
--
 
-### Questions for the Team
+## Questions for the Team
