@@ -5,7 +5,6 @@ namespace HipAndClavicle.Models;
 public class Product
 {
     public int ProductId { get; set; }
-    [Required]
     public string Name { get; set; } = default!;
     public ProductCategory Category { get; set; } = default!;
     public List<Color> ColorOptions { get; set; } = new();

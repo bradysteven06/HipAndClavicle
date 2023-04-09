@@ -6,7 +6,10 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
 
     }
-    public DbSet<Color> Colors { get; set; }
+    public ApplicationDbContext()
+    {
+
+    }
     public DbSet<Image> Images { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Product> Products { get; set; }
@@ -15,7 +18,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<Color> NamedColors { get; set; }
     public DbSet<AdminSettings> Settings { get; set; }
     public DbSet<Listing> Listings { get; set; }
-    public DbSet<Address> AddressBook { get; set; }
+    //public DbSet<Address> Addresses { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
 }
 

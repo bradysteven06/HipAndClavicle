@@ -27,7 +27,10 @@ namespace HipAndClavicle.Data
 
         public async Task<List<Order>> GetAdminCurrentOrdersAsync()
         {
-            return await _context.Orders.Include(o => o.ShippingAddress).Include(o => o.Items).ToListAsync();
+            return await _context.Orders
+                .Include(o => o.Items)
+                .Where(o => o.IsShipped.Equals(false)).ToListAsync();
+            
         }
 
         public async Task UpdateOrderAsync(Order order)

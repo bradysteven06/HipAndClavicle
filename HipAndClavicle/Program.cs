@@ -2,7 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 string? connectionString;
 // Add services to the container.
 
-#region On Windows
+#region On Mac
 
 if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 {
@@ -13,7 +13,7 @@ if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 
 #endregion
 
-#region On Mac
+#region On Windows
 
 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && builder.Environment.IsDevelopment())
 {
@@ -79,11 +79,16 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-using (var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateAsyncScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
-    await SeedData.Init(services);
+    await SeedData.Init(services, context);
+    await SeedData.SeedUsers();
+    await SeedData.SeedColors();
+    await SeedData.SeedProducts();
+    await SeedData.SeedItems();
+    await SeedData.SeedOrders();
     await SeedRoles.SeedCustomerRole(services);
     await SeedRoles.SeedAdminRole(services);
 }

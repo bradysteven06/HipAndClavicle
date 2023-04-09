@@ -1,4 +1,4 @@
-<diagram program="umletino" version="15.1"><zoom_level>9</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>126</x><y>639</y><w>189</w><h>162</h></coordinates><panel_attributes>Listing
+<diagram program="umletino" version="15.1"><zoom_level>8</zoom_level><help_text>Space for diagram notes©</help_text><element><id>UMLClass</id><coordinates><x>232</x><y>768</y><w>168</w><h>144</h></coordinates><panel_attributes>Listing
 --
 
 + ListingId : int
@@ -9,15 +9,13 @@
 + QuantitySold : int
 + DateCreated : DateTime
 + OnHand : int
-
-group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>126</x><y>891</y><w>189</w><h>99</h></coordinates><panel_attributes>Image
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>8</x><y>552</y><w>168</w><h>88</h></coordinates><panel_attributes>Image
 --
 
 + ImageId: int
 + Data : byte[]
 + Width : int
-+ Height? : int (not sure yet)
-group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>387</x><y>423</y><w>189</w><h>135</h></coordinates><panel_attributes>Shipment
++ Height? : int (not sure yet)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1000</x><y>264</y><w>168</w><h>120</h></coordinates><panel_attributes>Shipment
 --
 
 + ShipmentId : int
@@ -25,51 +23,30 @@ group=group-1</panel_attributes><additional_attributes></additional_attributes><
 + ShippedOn : DateTime
 + TrackingNumber : string?
 + ShippingCost : double
-+ DestinationAddress : string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>612</x><y>216</y><w>252</w><h>81</h></coordinates><panel_attributes>Customer
++ DestinationAddress : string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>752</x><y>448</y><w>168</w><h>160</h></coordinates><panel_attributes>Order
 --
 
-+ Cart : ShoppingCart
-+ OrderHistory : List&lt;Order&gt;
-
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>621</x><y>639</y><w>189</w><h>180</h></coordinates><panel_attributes>Order
---
-
-+ OrderId : int
-+ Products : List&lt;Product&gt;
-+ PurchaserId : int?
-+ IsPaid : bool
-+ IsShipped : bool
-+ DateOrdered : DateTime
-+ ShipmentId? : int
++ Orderld : int
++ Purchaserld : string
++ IsPaid : int
++ IsShipped : int
++ DateOrdered DateTime
++ Shipmentld : int
 + TotalPrice : double
-+ ShippingAddress : string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>684</x><y>396</y><w>180</w><h>99</h></coordinates><panel_attributes>ShoppingCart
++ ShippingAddress : string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>472</x><y>256</y><w>160</w><h>88</h></coordinates><panel_attributes>ShoppingCart
 --
 
 + ShoppingCartId : int
 + Products : List&lt;Product&gt;
 + Customer : AppUser
-+ DateCreated : DateTime</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>909</x><y>378</y><w>189</w><h>126</h></coordinates><panel_attributes>UserMessage
---
-
-+ UserMessageId : int
-+ Sender : AppUser
-+ DateSent : DateTime
-+ Read : bool
-+ Response : string
-+ OrderId? : int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>963</x><y>666</y><w>189</w><h>99</h></coordinates><panel_attributes>Merchant
---
-
-+ Messages : List&lt;UserMessage&gt;
-+ CurrentOrders : List&lt;Order&gt;
-+ SalesHistory : List&lt;Order&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>135</x><y>252</y><w>189</w><h>117</h></coordinates><panel_attributes>Review
++ DateCreated : DateTime</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>64</x><y>344</y><w>168</w><h>104</h></coordinates><panel_attributes>Review
 --
 
 + ReviewId : int
 + ReviewerId? : int
 + Message : string
 + VerifiedOrderID : int
-+ ReviewedProduct : ProductId?
-group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>126</x><y>432</y><w>189</w><h>144</h></coordinates><panel_attributes>Product
++ ReviewedProduct : ProductId?</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>296</x><y>464</y><w>168</w><h>128</h></coordinates><panel_attributes>Product
 --
 
 + ProductId : int
@@ -78,60 +55,60 @@ group=group-1</panel_attributes><additional_attributes></additional_attributes><
 + Colors : List&lt;int(hex)&gt;
 + InStock : bool
 + Quantity : int
-+ Reviews : List&lt;Review&gt;
-group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>927</x><y>900</y><w>234</w><h>117</h></coordinates><panel_attributes>AdminSettings
++ Reviews : List&lt;Review&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>792</x><y>24</y><w>208</w><h>112</h></coordinates><panel_attributes>AdminSettings
 --
     
 + PreferredContactType : enum
 + AutoReply : bool
 + AutoReplyMessage? : string
 + ShowContactInfo : bool
-+ VerifiedPurchaseForReview : bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>891</x><y>9</y><w>189</w><h>126</h></coordinates><panel_attributes>AppUser : IdentityUser
++ VerifiedPurchaseForReview : bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>720</x><y>248</y><w>168</w><h>120</h></coordinates><panel_attributes>AppUser : IdentityUser
 --
 
-+ Phone : string
-+ Id : int
-+ RoleNames : List&lt;string&gt;
++ Id : string
 + FName : string
 + LName : string
-+ Address : string</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>747</x><y>126</y><w>252</w><h>108</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>260;10;260;60;10;60;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>972</x><y>171</y><w>225</w><h>558</h></coordinates><panel_attributes></panel_attributes><additional_attributes>200;600;230;600;230;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>216</x><y>567</y><w>36</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1= 1</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>216</x><y>792</y><w>45</w><h>117</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1=1..n</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>738</x><y>288</y><w>36</w><h>126</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m1= 1</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>639</x><y>288</y><w>45</w><h>369</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1= 1
-m2=0..n</panel_attributes><additional_attributes>10;10;10;390</additional_attributes></element><element><id>Relation</id><coordinates><x>477</x><y>549</y><w>162</w><h>144</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1= 1</panel_attributes><additional_attributes>160;130;10;130;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>315</x><y>306</y><w>324</w><h>414</h></coordinates><panel_attributes>lt=&lt;-
-m1= 1..n
-must have a v</panel_attributes><additional_attributes>340;430;40;430;40;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>999</x><y>495</y><w>99</w><h>189</h></coordinates><panel_attributes>lt=&lt;-&gt;
++ Address : string
++ UserName : string
++ Email : string
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>312</x><y>584</y><w>32</w><h>200</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1= 1</panel_attributes><additional_attributes>10;10;10;230</additional_attributes></element><element><id>Relation</id><coordinates><x>176</x><y>440</y><w>136</w><h>112</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=0..n
+m2=1</panel_attributes><additional_attributes>10;10;10;110;150;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>536</x><y>672</y><w>168</w><h>136</h></coordinates><panel_attributes>NamedColor
+--
 
-sent to v
+ColorId: int
+ColorName : string
+HexValue : string
+Red : int
+Blue : int
+Green : int
+Listingld : int
+Productld : int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>536</x><y>448</y><w>168</w><h>152</h></coordinates><panel_attributes>OrderItem
+--
 
-responds to ^
++ Orderltemld : int
++ Orderld : int
++ ItemColor : int
++ IsPulled : bool
++ IsCut : bool
++ IsFolded : bool
++ IsStickered : bool
++ ItemProductld : int
++ Item : Product</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>336</x><y>288</y><w>152</w><h>192</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;220;10;10;170;10</additional_attributes></element><element><id>Relation</id><coordinates><x>832</x><y>128</y><w>40</w><h>136</h></coordinates><panel_attributes>lt=-
+m1=0..n
+m2=0..1
+</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>696</x><y>528</y><w>72</w><h>24</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>Relation</id><coordinates><x>456</x><y>528</y><w>96</w><h>24</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;100;10</additional_attributes></element><element><id>Relation</id><coordinates><x>880</x><y>296</y><w>136</w><h>40</h></coordinates><panel_attributes>lt=-
+recieves a ^
 m1=1
 m2=0..n
-</panel_attributes><additional_attributes>10;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>306</x><y>702</y><w>333</w><h>45</h></coordinates><panel_attributes>lt=&lt;-
-m1=1..n
-&lt; gets product from</panel_attributes><additional_attributes>10;20;350;20</additional_attributes></element><element><id>Relation</id><coordinates><x>801</x><y>711</y><w>180</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-&lt; has many
-m2= 1
-m1=0..n
-fullfilled by &gt;</panel_attributes><additional_attributes>10;20;180;20</additional_attributes></element><element><id>Relation</id><coordinates><x>738</x><y>486</y><w>99</w><h>171</h></coordinates><panel_attributes>lt=&lt;-
-m1= 1
-created with ^</panel_attributes><additional_attributes>10;170;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>216</x><y>207</y><w>414</w><h>63</h></coordinates><panel_attributes>lt=&lt;-
-m1=0..n
-m2=1
-&lt; creates a</panel_attributes><additional_attributes>10;50;10;20;440;20</additional_attributes></element><element><id>Relation</id><coordinates><x>855</x><y>243</y><w>189</w><h>153</h></coordinates><panel_attributes>lt=&lt;-&gt;
-sends a v
-m1=0..n
+</panel_attributes><additional_attributes>10;20;150;20</additional_attributes></element><element><id>Relation</id><coordinates><x>824</x><y>360</y><w>24</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1000</x><y>464</y><w>168</w><h>136</h></coordinates><panel_attributes>AppUser : IdentityUser
+(Admin/Merchant)
+--
 
-m2=1
-is response ^
-</panel_attributes><additional_attributes>170;150;170;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>999</x><y>756</y><w>81</w><h>162</h></coordinates><panel_attributes>lt=&lt;-
-m2=1
-creates a v
-m1=1</panel_attributes><additional_attributes>10;160;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>216</x><y>360</y><w>45</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1=0..n
-m2=1</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>477</x><y>270</y><w>153</w><h>162</h></coordinates><panel_attributes>lt=&lt;-
-m1=1
-sent to &gt;
-m2=0..n</panel_attributes><additional_attributes>150;10;10;10;10;160</additional_attributes></element></diagram>
++ Id : string
++ FName : string
++ LName : string
++ Address : string
++ UserName : string
++ Email : string</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1080</x><y>376</y><w>24</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>624</x><y>296</y><w>112</w><h>24</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;120;10</additional_attributes></element><element><id>Relation</id><coordinates><x>608</x><y>592</y><w>24</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>376</x><y>584</y><w>176</w><h>144</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>200;160;10;160;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>168</x><y>568</y><w>144</w><h>24</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;160;10</additional_attributes></element></diagram>
