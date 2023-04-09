@@ -12,7 +12,6 @@ public class AdminController : Controller
         _services = services;
         _userManager = services.GetRequiredService<UserManager<AppUser>>();
         _repo = services.GetRequiredService<IHipRepo>();
-<<<<<<< HEAD
     }
     public async Task<IActionResult> Index()
     {
@@ -29,20 +28,3 @@ public class AdminController : Controller
         return View(mvm);
     }
 }
-
-=======
-    }
-    public async Task<IActionResult> Index()
-    {
-        // since the entire class is restricted to Admin Only,
-        // no need to check for admin role in the controller methods.
-        var admin = await _userManager.FindByNameAsync(User.Identity!.Name!);
-        MerchantVM mvm = new(admin!)
-        {
-            CurrentOrders = await _repo.GetAdminCurrentOrdersAsync()
-        };
-        return View(mvm);
-    }
-}
-
->>>>>>> f6b757a49d1eddb176cd701cc052bdbe39ddf702
