@@ -16,7 +16,7 @@ git pull origin main
 
 git add -A
 
-read -p "please enter a commit message." message
+read -p "please enter a commit message. no qoutes are needed.: " message
 
 git commit -m "$message" > .log
 
