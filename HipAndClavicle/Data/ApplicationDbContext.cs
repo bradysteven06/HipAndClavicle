@@ -20,5 +20,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<Listing> Listings { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<UserMessage> Messages { get; set; }
+    public DbSet<SetSize> SetSizes { get; set; }
+
 }
 
