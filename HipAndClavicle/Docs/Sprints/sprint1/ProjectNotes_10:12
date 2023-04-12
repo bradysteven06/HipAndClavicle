@@ -1,0 +1,8 @@
+# Project Notes and Update
+
+There have been changes to the domain model that you should know about.
+
+## New Models
+
+- **SetSize** - the number of items that come in an ordered set. A Product can have many possible SetSizes. A SetSize can be associated with many products.
+- 
