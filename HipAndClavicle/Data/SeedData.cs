@@ -67,6 +67,7 @@ public static class SeedData
             Colors = { red, blue, green },
             SetSizes = new()
             {
+
                 new SetSize() { Size = 20 }
             }
         };
