@@ -43,11 +43,11 @@
 
                         @if (order.IsPaid)
                         {
-                            <span class="text-success">@Html.DisplayText("Paid");</span>
+                            <span class="text-success">Paid</span>
                         }
                         else
                         {
-                            <span class="text-danger">@Html.DisplayText("Unpaid")</span>
+                            <span class="text-danger">Unpaid</span>
                         }
 
                     </td>
@@ -59,7 +59,6 @@
                     <td>
 
                         @Html.CheckBoxFor(model => order.Items[i].IsFolded)
-
 
                     </td>
                     <td>
