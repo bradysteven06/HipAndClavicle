@@ -82,7 +82,7 @@ public static class SeedData
         Order order1 = new()
         {
             DateOrdered = DateTime.Now,
-            PurchaserId = await userManager.GetUserIdAsync(devin!),
+            Purchaser = devin!,
             ShippingAddress = devin!.Address!,
             TotalPrice = 25.00d,
 
@@ -90,14 +90,14 @@ public static class SeedData
         Order order2 = new()
         {
             DateOrdered = DateTime.Now,
-            PurchaserId = michael!.Id,
+            Purchaser = michael!,
             ShippingAddress = michael!.Address!,
             TotalPrice = 125.00d,
         };
         Order order3 = new()
         {
             DateOrdered = DateTime.Now,
-            PurchaserId = steven!.Id,
+            Purchaser = steven!,
             ShippingAddress = steven!.Address!,
             TotalPrice = 25.00d,
 
@@ -105,7 +105,7 @@ public static class SeedData
         Order order4 = new()
         {
             DateOrdered = DateTime.Now,
-            PurchaserId = nehemiah!.Id,
+            Purchaser = nehemiah!,
             ShippingAddress = nehemiah!.Address!,
             TotalPrice = 125.00d
         };
