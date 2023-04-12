@@ -29,6 +29,7 @@ namespace HipAndClavicle.Data
         public async Task<List<Order>> GetAdminCurrentOrdersAsync()
         {
             var orders = await _context.Orders
+                .Include(o => o.Purchaser)
                 .Include(o => o.Items)
                 .ThenInclude(i => i.Item)
                 .ThenInclude(i => i.SetSizes)
