@@ -6,12 +6,10 @@ namespace HipAndClavicle.Data
 {
     public static class SeedUsers
     {
-        static ApplicationDbContext? _context;
-        static UserManager<AppUser>? _userManager;
-
         public static async Task Seed(IServiceProvider services, ApplicationDbContext context)
         {
-            if (_userManager!.Users.Any())
+            UserManager<AppUser> userManager = services.GetRequiredService<UserManager<AppUser>>();
+            if (userManager!.Users.Any())
             {
                 return;
             }
@@ -54,10 +52,10 @@ namespace HipAndClavicle.Data
                 LName = "John",
                 Address = "123 fake st. Eugene, OR 97448"
             };
-            _ = await _userManager!.CreateAsync(devin, "!BassCase987");
-            _ = await _userManager!.CreateAsync(nehemiah, "@Password123");
-            _ = await _userManager!.CreateAsync(michael, "@Password123");
-            _ = await _userManager!.CreateAsync(steven, "@Password123");
+            _ = await userManager!.CreateAsync(devin, "!BassCase987");
+            _ = await userManager!.CreateAsync(nehemiah, "@Password123");
+            _ = await userManager!.CreateAsync(michael, "@Password123");
+            _ = await userManager!.CreateAsync(steven, "@Password123");
         }
     }
 }
