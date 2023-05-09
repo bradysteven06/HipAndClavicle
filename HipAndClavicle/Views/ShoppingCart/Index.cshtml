@@ -56,7 +56,7 @@ else
                                 <td>
                                 <form asp-action="RemoveFromCart" asp-controller="ShoppingCart" method="post">
                                     <input type="hidden" name="itemId" value="@item.Id" />
-                                    <button type="submit" class="btn btn-dark">Delete</button>
+                                    <button type="submit" class="btn btn-dark" onclick="return confirm('Are you sure you want to remove this item from the cart?');">Delete</button>
                                 </form>
 
                                 </td>
@@ -67,14 +67,24 @@ else
                     
         </div>
         <strong class="float-end">Cart Total: @Model.CartTotal</strong><br />
+        <div class="float-start">
+            <form asp-action="ClearCart" asp-controller="ShoppingCart" method="post" class="float-start">
+                <input type="hidden" name="cartId" value="@Model.CartId" />
+                <button type="submit" class="float-end btn btn-outline-danger" onclick="return confirm('Are you sure you want to clear your entire cart?');">Empty Cart</button>
+            </form>
+        </div>
         <div class="float-end">
-            @*TODO: This add button is for testing remove later.*@
+            <a href="/checkout" class="btn btn-dark">Checkout    ></a>
+        </div>
+        <br />
+        <br />
+        <div>
+            @*TODO: This add button is for testing, remove later.*@
             <h2>This is for testing only!</h2>
             <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
                 <input type="hidden" name="listingId" value="1" />
                 <button type="submit" class="btn btn-primary">Add Sample Listing to Cart</button>
             </form>
-            <a href="/checkout" class="btn btn-dark">Checkout    ></a>
         </div>
     </div>
 }
