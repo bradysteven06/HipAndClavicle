@@ -5,7 +5,7 @@
 
 <h1>Your Orders</h1>
 
-@if(Model.Count() > 0)
+@if(Model.Count > 0)
 {
     @foreach(var order in Model){
         double orderTotal = 0.00;
@@ -24,17 +24,27 @@
                     double itemTotalPrice = item.AmountOrdered * item.PricePerUnit;
                     orderTotal += itemTotalPrice;
                     string colorsString = "";
-                    colorsString += item.Item.AvailableColors[0].ColorName;
-                    if(item.ItemColors.Count() > 1)
+                    string colorHexValue = "#808080";
+                    if (item.ItemColors.Count > 0)
                     {
-                        foreach (var color in item.ItemColors.Skip(1))
+                        colorsString += item.ItemColors[0].ColorName;
+                        colorHexValue = item.ItemColors[0].HexValue;
+                        if (item.ItemColors.Count > 1)
                         {
-                            colorsString += ", " + color.ColorName;
+                            foreach (var color in item.ItemColors.Skip(1))
+                            {
+                                colorsString += ", " + color.ColorName;
+                            }
                         }
+
+                    }
+                    else
+                    {
+                        colorsString = "No Color";
                     }
                     <div class="col items-column">
                         <div class="row item-image-and-text-row">
-                            <div class=" first-image-of-item-row m-3" style="width:5vw; height:5vw; background:@item.Item.AvailableColors[0].HexValue"></div>
+                            <div class=" first-image-of-item-row m-3" style="width:5vw; height:5vw; background:@colorHexValue"></div>
 
                             <div class="col item-title-and-desc">
                                 <div class="row item-name-row">@item.Item.Name in @colorsString </div>
@@ -59,6 +69,12 @@
         </div>
 
     }
+}
+else
+{
+    <div class="text-center">
+        <h3>You don't have any orders yet.</h3>
+    </div>
 }
 @*<div class="row order-row">
 
