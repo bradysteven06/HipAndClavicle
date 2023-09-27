@@ -11,7 +11,6 @@ namespace HipAndClavicle.Controllers
     {
         private readonly IShoppingCartRepo _shoppingCartRepo;
         private readonly ICustRepo _custRepo;
-        private readonly UserManager<AppUser> _userManager;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly string _shoppingCartCookieName = "HnPCartId";
 
@@ -64,8 +63,7 @@ namespace HipAndClavicle.Controllers
             return View(viewModel);
         }
 
-        // This action method adds a listing to the cart with the specified quantity
-        // TODO: For testing Will be changed to add items from catalog.
+        // TODO: For testing adds 1 item to cart. Quantity needs to be set on listing page.
         [HttpPost]
         public async Task<IActionResult> AddToCart(int listingId, int quantity = 1)
         {
@@ -143,7 +141,7 @@ namespace HipAndClavicle.Controllers
             return RedirectToAction("Index", "ShoppingCart");
         }
 
-        // Helper method to get the cart ID for the current user
+        // Helper method to get the cartId for the current user
         private string GetCartId()
         {
             /*var httpContext = _contextAccessor.HttpContext;
@@ -168,21 +166,7 @@ namespace HipAndClavicle.Controllers
 
         }
 
-        // Helper method to get the shopping cart from the cookie
-        /*private SimpleShoppingCart GetShoppingCartFromCookie()
-        {
-            var cartCookie = _contextAccessor.HttpContext.Request.Cookies[_shoppingCartCookieName];
-            if (cartCookie == null)
-            {
-                // If the cart cookie doesn't exist, create an empty SimpleShoppingCart
-                return new SimpleShoppingCart { Items = new List<SimpleCartItem>() };
-            }
-            else
-            {
-                // Deserialize the SimpleShoppingCart from the cart cookie
-                return JsonConvert.DeserializeObject<SimpleShoppingCart>(cartCookie);
-            }
-        }*/
+        // Helper method to get the cartId from cookie
         private string GetCartIdFromCookie()
         {
             var cartCookie = _contextAccessor.HttpContext.Request.Cookies[_shoppingCartCookieName];
@@ -200,28 +184,14 @@ namespace HipAndClavicle.Controllers
             }
         }
 
-        // Helper method to save the shopping cart in the cookie
-        /*private void SetShoppingCartToCookie(SimpleShoppingCart shoppingCart)
-        {
-            // Serialize the shopping cart and save it in the cookie
-            var cartJson = JsonConvert.SerializeObject(shoppingCart);
-            _contextAccessor.HttpContext.Response.Cookies.Append(_shoppingCartCookieName, cartJson, new CookieOptions()); // Cookie will expire once browser is closed
-        }*/
+        // Helper method to save the cartId to a cookie
         private void SetCartIdToCookie(string cartId)
         {
             // Save cartId to a cookie
             _contextAccessor.HttpContext.Response.Cookies.Append(_shoppingCartCookieName, cartId, new CookieOptions()); // Cookie will expire once browser is closed
         }
 
-        // Helper method to empty the cart
-        private void ClearShoppingCartCookie()
-        {
-            var emptyCart = new SimpleShoppingCart { Items = new List<SimpleCartItem>() };
-            var json = STJ.JsonSerializer.Serialize(emptyCart);
-            _contextAccessor.HttpContext.Response.Cookies.Append(_shoppingCartCookieName, json, new CookieOptions()); // Cookie will expire once browser is closed
-        }
-
-        // Gets owner id
+        // Helper method to get the ownerId
         private string GetOwnerId()
         {
             var httpContext = _contextAccessor.HttpContext;
