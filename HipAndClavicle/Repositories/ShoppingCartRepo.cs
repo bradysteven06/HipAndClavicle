@@ -14,9 +14,48 @@ namespace HipAndClavicle.Repositories
 
         public async Task<ShoppingCart> GetOrCreateShoppingCartAsync(string cartId, string ownerId)
         {
-         
-            // Load the cart from the database
-            var shoppingCart = await _context.ShoppingCarts
+
+            if (ownerId == "default")
+            {
+                var shoppingCart = await _context.ShoppingCarts
+                .Include(cart => cart.ShoppingCartItems)
+                .ThenInclude(item => item.ListingItem)
+                .FirstOrDefaultAsync(cart => cart.CartId == cartId);
+
+                if (shoppingCart != null)
+                {
+                    return shoppingCart;
+                }
+                else
+                {
+                    shoppingCart = new ShoppingCart { CartId = cartId};
+                    _context.ShoppingCarts.Add(shoppingCart);
+                    await _context.SaveChangesAsync();
+                    return shoppingCart;
+                }
+            }
+            else
+            {
+                var shoppingCart = await _context.ShoppingCarts
+                .Include(cart => cart.ShoppingCartItems)
+                .ThenInclude(item => item.ListingItem)
+                .FirstOrDefaultAsync(cart => cart.Owner.Id == ownerId);
+
+                if (shoppingCart != null)
+                {
+                    return shoppingCart;
+                }
+                else
+                {
+                    var owner = await _userManager.FindByIdAsync(ownerId);
+                    shoppingCart = new ShoppingCart { CartId = cartId, Owner = owner };
+                    _context.ShoppingCarts.Add(shoppingCart);
+                    await _context.SaveChangesAsync();
+                    return shoppingCart;
+                }
+            }
+
+            /*var shoppingCart = await _context.ShoppingCarts
                 .Include(cart => cart.ShoppingCartItems)
                 .ThenInclude(item => item.ListingItem)
                 .FirstOrDefaultAsync(cart => cart.CartId == cartId);
@@ -39,9 +78,9 @@ namespace HipAndClavicle.Repositories
                 {
                     return null;
                 }
-            }
+            }*/
         }
-       
+
         public async Task<List<ShoppingCartItemViewModel>> GetShoppingCartItemsAsync(IEnumerable<ShoppingCartItem> items)
         {
             var viewModels = new List<ShoppingCartItemViewModel>();

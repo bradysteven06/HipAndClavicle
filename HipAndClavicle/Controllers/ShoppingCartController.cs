@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -26,10 +27,11 @@ namespace HipAndClavicle.Controllers
         {
             var httpContext = _contextAccessor.HttpContext;
             string cartId = GetCartId();
+            string ownerId = GetOwnerId();
             ShoppingCartViewModel viewModel;
 
             // Determine if the user is logged in and retrieve the shopping cart accordingly
-            if (User.Identity.IsAuthenticated)
+            /*if (User.Identity.IsAuthenticated)
             {
                 string ownerId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 ShoppingCart shoppingCart = await _shoppingCartRepo.GetOrCreateShoppingCartAsync(cartId, ownerId);
@@ -49,7 +51,15 @@ namespace HipAndClavicle.Controllers
                     CartId = cartId,
                     ShoppingCartItems = simpleShoppingCart.Items.Select(item => new ShoppingCartItemViewModel(item)).ToList(),
                 };
-            }
+            }*/
+
+            ShoppingCart shoppingCart = await _shoppingCartRepo.GetOrCreateShoppingCartAsync(cartId, ownerId);
+
+            viewModel = new ShoppingCartViewModel
+            {
+                CartId = shoppingCart.CartId,
+                ShoppingCartItems = await _shoppingCartRepo.GetShoppingCartItemsAsync(shoppingCart.ShoppingCartItems),
+            };
 
             return View(viewModel);
         }
@@ -211,15 +221,6 @@ namespace HipAndClavicle.Controllers
         private string GetCartId()
         {
             /*var httpContext = _contextAccessor.HttpContext;
-            if (httpContext.User.Identity.IsAuthenticated)
-            {
-                return httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            }
-            else
-            {
-                return null;
-            }*/
-            var httpContext = _contextAccessor.HttpContext;
             if (httpContext?.User?.Identity?.IsAuthenticated ?? false)
             {
                 return httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -227,7 +228,8 @@ namespace HipAndClavicle.Controllers
             else
             {
                 return null;
-            }
+            }*/
+            return Guid.NewGuid().ToString();
         }
 
         // Helper method to get the shopping cart from the cookie
@@ -260,6 +262,24 @@ namespace HipAndClavicle.Controllers
             var emptyCart = new SimpleShoppingCart { Items = new List<SimpleCartItem>() };
             var json = STJ.JsonSerializer.Serialize(emptyCart);
             _contextAccessor.HttpContext.Response.Cookies.Append(_shoppingCartCookieName, json, new CookieOptions()); // Cookie will expire once browser is closed
+        }
+
+        // Gets owner id
+        private string GetOwnerId()
+        {
+            var httpContext = _contextAccessor.HttpContext;
+            string ownerId = "";
+            if (User.Identity.IsAuthenticated)
+            {
+                ownerId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                
+            }
+            else
+            {
+                ownerId = "default";
+            }
+
+            return ownerId;
         }
     }
 
