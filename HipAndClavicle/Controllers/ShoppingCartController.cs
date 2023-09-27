@@ -13,7 +13,7 @@ namespace HipAndClavicle.Controllers
         private readonly ICustRepo _custRepo;
         private readonly UserManager<AppUser> _userManager;
         private readonly IHttpContextAccessor _contextAccessor;
-        private readonly string _shoppingCartCookieName = "Cart";
+        private readonly string _shoppingCartCookieName = "HnPCartId";
 
         public ShoppingCartController(IShoppingCartRepo shoppingCartRepository, ICustRepo custRepo, IHttpContextAccessor httpContextAccessor)
         {
@@ -25,7 +25,7 @@ namespace HipAndClavicle.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var httpContext = _contextAccessor.HttpContext;
+            //var httpContext = _contextAccessor.HttpContext;
             string cartId = GetCartId();
             string ownerId = GetOwnerId();
             ShoppingCartViewModel viewModel;
@@ -71,7 +71,9 @@ namespace HipAndClavicle.Controllers
         {
             // Get the cart ID
             var cartId = GetCartId();
-
+            //---------------------- 9/27/23 5:15am
+            // left off here. at this point there is always a cart id for both types of users.
+            // need to update this method to add an item to cart for both user types. user GetOwnerID() method
             if (cartId != null)
             {
                 // Handle logged-in users
@@ -104,7 +106,7 @@ namespace HipAndClavicle.Controllers
             {
                 // Handle non-logged-in users
 
-                var shoppingCart = GetShoppingCartFromCookie();
+                /*var shoppingCart = GetShoppingCartFromCookie();
                 var listing = await _custRepo.GetListingByIdAsync(listingId);
 
                 // Check if the listing already exists in the shopping cart
@@ -126,7 +128,7 @@ namespace HipAndClavicle.Controllers
                     shoppingCart.Items.Add(simpleCartItem);
                 }
                 // Save the updated shopping cart in the cookie
-                SetShoppingCartToCookie(shoppingCart);
+                SetShoppingCartToCookie(shoppingCart);*/
             }
 
             return RedirectToAction("Index", "ShoppingCart");
@@ -150,7 +152,7 @@ namespace HipAndClavicle.Controllers
             else
             {
                 // Handle non-logged-in users
-                var simpleShoppingCart = GetShoppingCartFromCookie();
+                /*var simpleShoppingCart = GetShoppingCartFromCookie();
                 var simpleCartItem = simpleShoppingCart.Items.FirstOrDefault(item => item.Id == itemId);
                 if (simpleCartItem != null)
                 {
@@ -160,7 +162,7 @@ namespace HipAndClavicle.Controllers
                 {
                     return NotFound();
                 }
-                SetShoppingCartToCookie(simpleShoppingCart);
+                SetShoppingCartToCookie(simpleShoppingCart);*/
             }
             
             return RedirectToAction("Index", "ShoppingCart");
@@ -184,7 +186,7 @@ namespace HipAndClavicle.Controllers
             else
             {
                 // Handle non-logged-in users
-                var simpleShoppingCart = GetShoppingCartFromCookie();
+                /*var simpleShoppingCart = GetShoppingCartFromCookie();
                 var simpleCartItem = simpleShoppingCart.Items.FirstOrDefault(item => item.Id == itemId);
                 if (simpleCartItem != null)
                 {
@@ -194,7 +196,7 @@ namespace HipAndClavicle.Controllers
                 {
                     return NotFound();
                 }
-                SetShoppingCartToCookie(simpleShoppingCart);
+                SetShoppingCartToCookie(simpleShoppingCart);*/
             }
             return RedirectToAction("Index", "ShoppingCart");
         }
@@ -229,11 +231,21 @@ namespace HipAndClavicle.Controllers
             {
                 return null;
             }*/
-            return Guid.NewGuid().ToString();
+            
+
+            if (User.Identity.IsAuthenticated)
+            {
+                return Guid.NewGuid().ToString();
+            }
+            else
+            {
+                return GetCartIdFromCookie();
+            }
+
         }
 
         // Helper method to get the shopping cart from the cookie
-        private SimpleShoppingCart GetShoppingCartFromCookie()
+        /*private SimpleShoppingCart GetShoppingCartFromCookie()
         {
             var cartCookie = _contextAccessor.HttpContext.Request.Cookies[_shoppingCartCookieName];
             if (cartCookie == null)
@@ -246,14 +258,33 @@ namespace HipAndClavicle.Controllers
                 // Deserialize the SimpleShoppingCart from the cart cookie
                 return JsonConvert.DeserializeObject<SimpleShoppingCart>(cartCookie);
             }
+        }*/
+        private string GetCartIdFromCookie()
+        {
+            var cartCookie = _contextAccessor.HttpContext.Request.Cookies[_shoppingCartCookieName];
+            if (cartCookie == null)
+            {
+                // If the cart cookie doesn't exist, create new id for cart
+                return Guid.NewGuid().ToString();
+            }
+            else
+            {
+                // return the cart id cookie
+                return cartCookie;
+            }
         }
 
         // Helper method to save the shopping cart in the cookie
-        private void SetShoppingCartToCookie(SimpleShoppingCart shoppingCart)
+        /*private void SetShoppingCartToCookie(SimpleShoppingCart shoppingCart)
         {
             // Serialize the shopping cart and save it in the cookie
             var cartJson = JsonConvert.SerializeObject(shoppingCart);
             _contextAccessor.HttpContext.Response.Cookies.Append(_shoppingCartCookieName, cartJson, new CookieOptions()); // Cookie will expire once browser is closed
+        }*/
+        private void SetCartIdToCookie(string cartId)
+        {
+            // Serialize the shopping cart and save it in the cookie
+            _contextAccessor.HttpContext.Response.Cookies.Append(_shoppingCartCookieName, cartId, new CookieOptions()); // Cookie will expire once browser is closed
         }
 
         // Helper method to empty the cart
