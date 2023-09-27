@@ -71,65 +71,29 @@ namespace HipAndClavicle.Controllers
         {
             // Get the cart ID
             var cartId = GetCartId();
-            //---------------------- 9/27/23 5:15am
-            // left off here. at this point there is always a cart id for both types of users.
-            // need to update this method to add an item to cart for both user types. user GetOwnerID() method
-            if (cartId != null)
+            string ownerId = GetOwnerId();
+
+            // Get the shopping cart using the cart ID
+            var shoppingCart = await _shoppingCartRepo.GetOrCreateShoppingCartAsync(cartId, ownerId);
+
+            // Find the listing with the given listingId
+            var listing = await _custRepo.GetListingByIdAsync(listingId);
+
+            if (listing == null)
             {
-                // Handle logged-in users
-
-                var httpContext = _contextAccessor.HttpContext;
-                string ownerId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-                // Get the shopping cart using the cart ID
-                var shoppingCart = await _shoppingCartRepo.GetOrCreateShoppingCartAsync(cartId, ownerId);
-
-                // Find the listing with the given listingId
-                var listing = await _custRepo.GetListingByIdAsync(listingId);
-
-                if (listing == null)
-                {
-                    return NotFound();
-                }
-
-                // Create a new ShoppingCartItem with the shoppingCartId, listing, and quantity
-                var shoppingCartItem = new ShoppingCartItem
-                {
-                    ShoppingCartId = shoppingCart.Id,
-                    ListingItem = listing,
-                    Quantity = quantity
-                };
-
-                await _shoppingCartRepo.AddShoppingCartItemAsync(shoppingCartItem);
+                return NotFound();
             }
-            else
+
+            // Create a new ShoppingCartItem with the shoppingCartId, listing, and quantity
+            var shoppingCartItem = new ShoppingCartItem
             {
-                // Handle non-logged-in users
+                ShoppingCartId = shoppingCart.Id,
+                ListingItem = listing,
+                Quantity = quantity
+            };
 
-                /*var shoppingCart = GetShoppingCartFromCookie();
-                var listing = await _custRepo.GetListingByIdAsync(listingId);
-
-                // Check if the listing already exists in the shopping cart
-                var simpleCartItem = shoppingCart.Items.FirstOrDefault(item => item.ListingId == listingId);
-                if (simpleCartItem != null)
-                {
-                    simpleCartItem.Qty += quantity;
-                }
-                else
-                {
-                    simpleCartItem = new SimpleCartItem
-                    {
-                        ListingId = listing.ListingId,
-                        Name = listing.ListingTitle,
-                        Desc = listing.ListingDescription,
-                        Qty = quantity,
-                        ItemPrice = listing.Price
-                    };
-                    shoppingCart.Items.Add(simpleCartItem);
-                }
-                // Save the updated shopping cart in the cookie
-                SetShoppingCartToCookie(shoppingCart);*/
-            }
+            await _shoppingCartRepo.AddShoppingCartItemAsync(shoppingCartItem);
+            
 
             return RedirectToAction("Index", "ShoppingCart");
         }
@@ -137,33 +101,17 @@ namespace HipAndClavicle.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateCart(int itemId, int quantity)
         {
-            if (User.Identity.IsAuthenticated)
+            
+            // Handle logged-in users
+            var item = await _shoppingCartRepo.GetCartItem(itemId);
+            if (item == null)
             {
-                // Handle logged-in users
-                var item = await _shoppingCartRepo.GetCartItem(itemId);
-                if (item == null)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
 
-                item.Quantity = quantity;
-                await _shoppingCartRepo.UpdateItemAsync(item);
-            }
-            else
-            {
-                // Handle non-logged-in users
-                /*var simpleShoppingCart = GetShoppingCartFromCookie();
-                var simpleCartItem = simpleShoppingCart.Items.FirstOrDefault(item => item.Id == itemId);
-                if (simpleCartItem != null)
-                {
-                    simpleCartItem.Qty = quantity;
-                }
-                else
-                {
-                    return NotFound();
-                }
-                SetShoppingCartToCookie(simpleShoppingCart);*/
-            }
+            item.Quantity = quantity;
+            await _shoppingCartRepo.UpdateItemAsync(item);
+            
             
             return RedirectToAction("Index", "ShoppingCart");
         }
@@ -172,32 +120,15 @@ namespace HipAndClavicle.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveFromCart(int itemId)
         {
-            if (User.Identity.IsAuthenticated)
+            
+            var item = await _shoppingCartRepo.GetCartItem(itemId);
+            if (item == null)
             {
-                // Handle logged-in users
-                var item = await _shoppingCartRepo.GetCartItem(itemId);
-                if (item == null)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
 
-                await _shoppingCartRepo.RemoveItemAsync(item);
-            }
-            else
-            {
-                // Handle non-logged-in users
-                /*var simpleShoppingCart = GetShoppingCartFromCookie();
-                var simpleCartItem = simpleShoppingCart.Items.FirstOrDefault(item => item.Id == itemId);
-                if (simpleCartItem != null)
-                {
-                    simpleShoppingCart.Items.Remove(simpleCartItem);
-                }
-                else
-                {
-                    return NotFound();
-                }
-                SetShoppingCartToCookie(simpleShoppingCart);*/
-            }
+            await _shoppingCartRepo.RemoveItemAsync(item);
+            
             return RedirectToAction("Index", "ShoppingCart");
         }
 
@@ -205,17 +136,10 @@ namespace HipAndClavicle.Controllers
         [HttpPost]
         public async Task<IActionResult> ClearCart(string cartId)
         {
-            var httpContext = _contextAccessor.HttpContext;
 
-            if (User.Identity.IsAuthenticated)
-            {
-                string ownerId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                await _shoppingCartRepo.ClearShoppingCartAsync(cartId, ownerId);
-            }
-            else
-            {
-                ClearShoppingCartCookie();
-            }
+            string ownerId = GetOwnerId();
+            await _shoppingCartRepo.ClearShoppingCartAsync(cartId, ownerId);
+            
             return RedirectToAction("Index", "ShoppingCart");
         }
 
@@ -265,7 +189,9 @@ namespace HipAndClavicle.Controllers
             if (cartCookie == null)
             {
                 // If the cart cookie doesn't exist, create new id for cart
-                return Guid.NewGuid().ToString();
+                string cartId = Guid.NewGuid().ToString();
+                SetCartIdToCookie(cartId);
+                return cartId;
             }
             else
             {
@@ -283,7 +209,7 @@ namespace HipAndClavicle.Controllers
         }*/
         private void SetCartIdToCookie(string cartId)
         {
-            // Serialize the shopping cart and save it in the cookie
+            // Save cartId to a cookie
             _contextAccessor.HttpContext.Response.Cookies.Append(_shoppingCartCookieName, cartId, new CookieOptions()); // Cookie will expire once browser is closed
         }
 
