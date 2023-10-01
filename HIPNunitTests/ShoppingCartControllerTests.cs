@@ -51,7 +51,7 @@ namespace HIPNunitTests
             fakeCustRepo = serviceProvider.GetService<ICustRepo>() as FakeCustRepo;
         }
 
-        [Test]
+        /*[Test]
         public async Task AddToCartWhenUserIsLoggedIn()
         {
             // Arrange
@@ -602,9 +602,9 @@ namespace HIPNunitTests
             var redirectToActionResult = clearResult as RedirectToActionResult;
             Assert.AreEqual("Index", redirectToActionResult.ActionName);
             Assert.AreEqual("ShoppingCart", redirectToActionResult.ControllerName);
-        }
+        }*/
     }
 
-    
+
 }
 

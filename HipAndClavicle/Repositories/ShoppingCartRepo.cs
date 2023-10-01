@@ -1,4 +1,6 @@
 ﻿
+using HipAndClavicle.Models;
+
 namespace HipAndClavicle.Repositories
 {
     public class ShoppingCartRepo : IShoppingCartRepo
@@ -12,73 +14,38 @@ namespace HipAndClavicle.Repositories
             _userManager = userManager;
         }
 
-        public async Task<ShoppingCart> GetOrCreateShoppingCartAsync(string cartId, string ownerId)
+        public async Task<ShoppingCart> GetShoppingCartAsync(string cartId)
         {
 
-            if (ownerId == "default")
-            {
-                var shoppingCart = await _context.ShoppingCarts
-                .Include(cart => cart.ShoppingCartItems)
-                .ThenInclude(item => item.ListingItem)
-                .FirstOrDefaultAsync(cart => cart.CartId == cartId);
+            
+            var shoppingCart = await _context.ShoppingCarts
+            .Include(cart => cart.ShoppingCartItems)
+            .ThenInclude(item => item.ListingItem)
+            .FirstOrDefaultAsync(cart => cart.CartId == cartId);
 
-                if (shoppingCart != null)
-                {
-                    return shoppingCart;
-                }
-                else
-                {
-                    shoppingCart = new ShoppingCart { CartId = cartId};
-                    _context.ShoppingCarts.Add(shoppingCart);
-                    await _context.SaveChangesAsync();
-                    return shoppingCart;
-                }
-            }
-            else
-            {
-                var shoppingCart = await _context.ShoppingCarts
-                .Include(cart => cart.ShoppingCartItems)
-                .ThenInclude(item => item.ListingItem)
-                .FirstOrDefaultAsync(cart => cart.Owner.Id == ownerId);
+            /*var owner = await _userManager.FindByIdAsync(ownerId);
+            shoppingCart = new ShoppingCart { CartId = cartId, Owner = owner };
+            _context.ShoppingCarts.Add(shoppingCart);
+            await _context.SaveChangesAsync();*/
+            return shoppingCart;
+                
+        }
 
-                if (shoppingCart != null)
-                {
-                    return shoppingCart;
-                }
-                else
-                {
-                    var owner = await _userManager.FindByIdAsync(ownerId);
-                    shoppingCart = new ShoppingCart { CartId = cartId, Owner = owner };
-                    _context.ShoppingCarts.Add(shoppingCart);
-                    await _context.SaveChangesAsync();
-                    return shoppingCart;
-                }
-            }
+        public string GetCartIdFromDB(string ownerId)
+        {
+            var cartId = _context.ShoppingCarts
+            .Where(cart => cart.Owner.Id == ownerId)
+            .Select(cart => cart.CartId)
+            .FirstOrDefault();
 
-            /*var shoppingCart = await _context.ShoppingCarts
-                .Include(cart => cart.ShoppingCartItems)
-                .ThenInclude(item => item.ListingItem)
-                .FirstOrDefaultAsync(cart => cart.CartId == cartId);
+            return cartId;
+        }
 
-            if (shoppingCart != null)
-            {
-                return shoppingCart;
-            }
-            else
-            {
-                if (ownerId != null)
-                {
-                    var owner = await _userManager.FindByIdAsync(ownerId);
-                    shoppingCart = new ShoppingCart { CartId = cartId, Owner = owner };
-                    _context.ShoppingCarts.Add(shoppingCart);
-                    await _context.SaveChangesAsync();
-                    return shoppingCart;
-                }
-                else
-                {
-                    return null;
-                }
-            }*/
+        public async void CreateShoppingCartAsync(string cartId)
+        {
+            var shoppingCart = new ShoppingCart { CartId = cartId };
+            _context.ShoppingCarts.Add(shoppingCart);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<ShoppingCartItemViewModel>> GetShoppingCartItemsAsync(IEnumerable<ShoppingCartItem> items)
@@ -132,12 +99,12 @@ namespace HipAndClavicle.Repositories
             await _context.SaveChangesAsync();            
         }
 
-        public async Task ClearShoppingCartAsync(string cartId, string ownerId)
+        /*public async Task ClearShoppingCartAsync(string cartId, string ownerId)
         {
             ShoppingCart shoppingCart = await GetOrCreateShoppingCartAsync(cartId, ownerId);
 
             _context.ShoppingCartItems.RemoveRange(shoppingCart.ShoppingCartItems);
             await _context.SaveChangesAsync();
-        }
+        }*/
     }
 }
