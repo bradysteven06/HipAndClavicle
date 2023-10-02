@@ -99,12 +99,12 @@ namespace HipAndClavicle.Repositories
             await _context.SaveChangesAsync();            
         }
 
-        /*public async Task ClearShoppingCartAsync(string cartId, string ownerId)
+        public async Task ClearShoppingCartAsync(string cartId)
         {
-            ShoppingCart shoppingCart = await GetOrCreateShoppingCartAsync(cartId, ownerId);
+            ShoppingCart shoppingCart = await GetShoppingCartAsync(cartId);
 
             _context.ShoppingCartItems.RemoveRange(shoppingCart.ShoppingCartItems);
             await _context.SaveChangesAsync();
-        }*/
+        }
     }
 }

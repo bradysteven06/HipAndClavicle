@@ -21,11 +21,13 @@ namespace HipAndClavicle.Controllers
             _contextAccessor = httpContextAccessor;
         }
 
+        // Gets cookie with cartId in it
         public string GetCookie(string cookieName)
         {
             return _contextAccessor.HttpContext.Request.Cookies[cookieName];
         }
 
+        // Sets cartId to cookie
         public void SetCookie(string cookieName, string cookieValue)
         {
             _contextAccessor.HttpContext.Response.Cookies.Append(cookieName, cookieValue, new CookieOptions());
@@ -34,16 +36,10 @@ namespace HipAndClavicle.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            //var httpContext = _contextAccessor.HttpContext;
 
             string ownerId = GetOwnerId();
-            //string cartId = GetCookie(_shoppingCartCookieName);
             string cartId = !(User.Identity.IsAuthenticated) ? GetCookie(_shoppingCartCookieName) : _shoppingCartRepo.GetCartIdFromDB(ownerId);
             
-            // use ternary operator "Const x = condition ? exprIfTrue : exprIfFalse"
-            // if not user logged in get cookie
-            // else if user logged in search database find first row or most recent that corresponds to owner id and set cart id to cookie
-
             bool needsCart = false;
             if ( cartId == null) 
             {
@@ -146,14 +142,14 @@ namespace HipAndClavicle.Controllers
 
         // Removes all items from cart
         [HttpPost]
-        /*public async Task<IActionResult> ClearCart(string cartId)
+        public async Task<IActionResult> ClearCart(string cartId)
         {
 
             string ownerId = GetOwnerId();
-            await _shoppingCartRepo.ClearShoppingCartAsync(cartId, ownerId);
-            
+            await _shoppingCartRepo.ClearShoppingCartAsync(cartId);
+
             return RedirectToAction("Index", "ShoppingCart");
-        }*/
+        }
 
         // Helper method to get the cartId for the current user
         private string GenerateCartId()
@@ -164,32 +160,6 @@ namespace HipAndClavicle.Controllers
             
 
         }
-/*
-        // Helper method to get the cartId from cookie
-        private string GetCartIdFromCookie()
-        {
-            var cartCookie = _contextAccessor.HttpContext.Request.Cookies[_shoppingCartCookieName];
-            if (cartCookie == null)
-            {
-                // If the cart cookie doesn't exist, create new id for cart
-                string cartId = Guid.NewGuid().ToString();
-                SetCartIdToCookie(cartId);
-                return cartId;
-            }
-            else
-            {
-                // return the cart id cookie
-                return cartCookie;
-            }
-        }
-
-        // Helper method to save the cartId to a cookie
-        private string SetCartIdToCookie(string cartId)
-        {
-            // Save cartId to a cookie
-            _contextAccessor.HttpContext.Response.Cookies.Append(_shoppingCartCookieName, cartId, new CookieOptions()); // Cookie will expire once browser is closed
-            return _contextAccessor.HttpContext.Request.Cookies[_shoppingCartCookieName];
-        }*/
 
         // Helper method to get the ownerId
         private string GetOwnerId()
