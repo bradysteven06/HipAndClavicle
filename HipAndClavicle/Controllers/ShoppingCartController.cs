@@ -39,8 +39,8 @@ namespace HipAndClavicle.Controllers
             string ownerId = GetOwnerId();
             //string cartId = GetCookie(_shoppingCartCookieName);
             string cartId = !(User.Identity.IsAuthenticated) ? GetCookie(_shoppingCartCookieName) : _shoppingCartRepo.GetCartIdFromDB(ownerId);
-            SetCookie(_shoppingCartCookieName, cartId);
-            // use terniary operator "Const x = condition ? exprIfTrue : exprIfFalse"
+            
+            // use ternary operator "Const x = condition ? exprIfTrue : exprIfFalse"
             // if not user logged in get cookie
             // else if user logged in search database find first row or most recent that corresponds to owner id and set cart id to cookie
 
@@ -50,6 +50,11 @@ namespace HipAndClavicle.Controllers
                 cartId = GenerateCartId();
                 SetCookie(_shoppingCartCookieName, cartId);
                 needsCart = true;
+            }
+            else
+            {
+                // Sets cartId to cookie in the instance that a user logs in and gets cartId from already existing cart.
+                SetCookie(_shoppingCartCookieName, cartId);
             }
 
             
