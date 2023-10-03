@@ -41,11 +41,13 @@ namespace HipAndClavicle.Repositories
             return cartId;
         }
 
-        public async void CreateShoppingCartAsync(string cartId)
+        public async Task<int> CreateShoppingCartAsync(string cartId)
         {
             var shoppingCart = new ShoppingCart { CartId = cartId };
             _context.ShoppingCarts.Add(shoppingCart);
             await _context.SaveChangesAsync();
+
+            return 0;
         }
 
         public async Task<List<ShoppingCartItemViewModel>> GetShoppingCartItemsAsync(IEnumerable<ShoppingCartItem> items)

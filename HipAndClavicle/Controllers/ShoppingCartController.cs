@@ -12,7 +12,7 @@ namespace HipAndClavicle.Controllers
         private readonly IShoppingCartRepo _shoppingCartRepo;
         private readonly ICustRepo _custRepo;
         private readonly IHttpContextAccessor _contextAccessor;
-        private readonly string _shoppingCartCookieName = "HnPCartId";
+        public const string shoppingCartCookieName = "HnPCartId";
 
         public ShoppingCartController(IShoppingCartRepo shoppingCartRepository, ICustRepo custRepo, IHttpContextAccessor httpContextAccessor)
         {
@@ -33,24 +33,39 @@ namespace HipAndClavicle.Controllers
             _contextAccessor.HttpContext.Response.Cookies.Append(cookieName, cookieValue, new CookieOptions());
         }
 
+        public void DeleteCookie(string cookieName)
+        {
+            Response.Cookies.Delete(cookieName);
+        }
+
+        public void DeleteShoppingCartCookie(string cookieName)
+        {
+            DeleteCookie(cookieName);
+        }
+
+        public void RefreshShoppingCartCookie(string cookieName)
+        {
+
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
 
             string ownerId = GetOwnerId();
-            string cartId = !(User.Identity.IsAuthenticated) ? GetCookie(_shoppingCartCookieName) : _shoppingCartRepo.GetCartIdFromDB(ownerId);
+            string cartId = !(User.Identity.IsAuthenticated) ? GetCookie(shoppingCartCookieName) : _shoppingCartRepo.GetCartIdFromDB(ownerId);
             
             bool needsCart = false;
             if ( cartId == null) 
             {
                 cartId = GenerateCartId();
-                SetCookie(_shoppingCartCookieName, cartId);
+                SetCookie(shoppingCartCookieName, cartId);
                 needsCart = true;
             }
             else
             {
                 // Sets cartId to cookie in the instance that a user logs in and gets cartId from already existing cart.
-                SetCookie(_shoppingCartCookieName, cartId);
+                SetCookie(shoppingCartCookieName, cartId);
             }
 
             
@@ -60,7 +75,7 @@ namespace HipAndClavicle.Controllers
 
             if (needsCart)
             {
-                _shoppingCartRepo.CreateShoppingCartAsync(cartId);
+                await _shoppingCartRepo.CreateShoppingCartAsync(cartId);
             }
             ShoppingCart shoppingCart = await _shoppingCartRepo.GetShoppingCartAsync(cartId);
 
@@ -78,7 +93,7 @@ namespace HipAndClavicle.Controllers
         public async Task<IActionResult> AddToCart(int listingId, int quantity = 1)
         {
             // Get the cart ID
-            var cartId = GetCookie(_shoppingCartCookieName);
+            var cartId = GetCookie(shoppingCartCookieName);
             string ownerId = GetOwnerId();
 
             // Get the shopping cart using the cart ID
@@ -154,11 +169,7 @@ namespace HipAndClavicle.Controllers
         // Helper method to get the cartId for the current user
         private string GenerateCartId()
         {
-           
-            
             return Guid.NewGuid().ToString();
-            
-
         }
 
         // Helper method to get the ownerId
