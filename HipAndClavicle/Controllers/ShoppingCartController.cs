@@ -12,13 +12,20 @@ namespace HipAndClavicle.Controllers
         private readonly IShoppingCartRepo _shoppingCartRepo;
         private readonly ICustRepo _custRepo;
         private readonly IHttpContextAccessor _contextAccessor;
-        public const string shoppingCartCookieName = "HnPCartId";
+        //public const string shoppingCartCookieName = "HnPCartId";
 
-        public ShoppingCartController(IShoppingCartRepo shoppingCartRepository, ICustRepo custRepo, IHttpContextAccessor httpContextAccessor)
+        private readonly string cookiePrefix;
+        public readonly string shoppingCartCookieName;
+
+
+
+        public ShoppingCartController(IShoppingCartRepo shoppingCartRepository, ICustRepo custRepo, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             _shoppingCartRepo = shoppingCartRepository;
             _custRepo = custRepo;
             _contextAccessor = httpContextAccessor;
+            cookiePrefix = configuration["CookiePrefix"];
+            shoppingCartCookieName = cookiePrefix + "CartId";
         }
 
         // Gets cookie with cartId in it

@@ -112,7 +112,7 @@ public class AccountController : Controller
     {
         await _signInManager.SignOutAsync();
 
-        // Deletes cookie when Log
+        // Deletes cookie when Logging out
         Response.Cookies.Delete(ShoppingCartController.shoppingCartCookieName);
 
         _toast.Success("You are now signed out, Goodbye!");
