@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
+using HipAndClavicle.UtilityClasses;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using STJ = System.Text.Json;
@@ -12,20 +13,23 @@ namespace HipAndClavicle.Controllers
         private readonly IShoppingCartRepo _shoppingCartRepo;
         private readonly ICustRepo _custRepo;
         private readonly IHttpContextAccessor _contextAccessor;
+        private CookieUtility _cookieUtility;
         //public const string shoppingCartCookieName = "HnPCartId";
 
-        private readonly string cookiePrefix;
-        public readonly string shoppingCartCookieName;
+        //private readonly string cookiePrefix;
+        //public static readonly string shoppingCartCookieName;
 
 
 
-        public ShoppingCartController(IShoppingCartRepo shoppingCartRepository, ICustRepo custRepo, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+        public ShoppingCartController(IShoppingCartRepo shoppingCartRepository, ICustRepo custRepo, IHttpContextAccessor httpContextAccessor, CookieUtility cookieUtility)
         {
             _shoppingCartRepo = shoppingCartRepository;
             _custRepo = custRepo;
             _contextAccessor = httpContextAccessor;
-            cookiePrefix = configuration["CookiePrefix"];
-            shoppingCartCookieName = cookiePrefix + "CartId";
+            _cookieUtility = cookieUtility;
+
+            //cookiePrefix = configuration["CookiePrefix"];
+            //shoppingCartCookieName = cookiePrefix + "CartId";
         }
 
         // Gets cookie with cartId in it
@@ -58,6 +62,7 @@ namespace HipAndClavicle.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            string shoppingCartCookieName = _cookieUtility.GetShopingCartCookieName();
 
             string ownerId = GetOwnerId();
             string cartId = !(User.Identity.IsAuthenticated) ? GetCookie(shoppingCartCookieName) : _shoppingCartRepo.GetCartIdFromDB(ownerId);
@@ -99,6 +104,9 @@ namespace HipAndClavicle.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToCart(int listingId, int quantity = 1)
         {
+            string shoppingCartCookieName = _cookieUtility.GetShopingCartCookieName();
+
+
             // Get the cart ID
             var cartId = GetCookie(shoppingCartCookieName);
             string ownerId = GetOwnerId();

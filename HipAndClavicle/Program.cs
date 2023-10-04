@@ -1,3 +1,5 @@
+using HipAndClavicle.UtilityClasses;
+
 var builder = WebApplication.CreateBuilder(args);
 string? connectionString;
 // Add services to the container.
@@ -39,6 +41,11 @@ builder.Services.AddNotyf(configure =>
 });
 
 #endregion
+
+// Load configuration from appsettings.json
+builder.Configuration.AddJsonFile("appsettings.json");
+// Register the CookieUtility class with the DI container
+builder.Services.AddScoped<CookieUtility>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
