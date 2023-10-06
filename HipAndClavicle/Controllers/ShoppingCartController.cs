@@ -33,7 +33,7 @@ namespace HipAndClavicle.Controllers
         {
 
             string ownerId = GetOwnerId();
-            string cartId = !(User.Identity.IsAuthenticated) ? CookieUtility.GetCookie() : _shoppingCartRepo.GetCartIdFromDB(ownerId);
+            string cartId = !(User.Identity.IsAuthenticated) ? CookieUtility.GetShoppingCartCookie() : _shoppingCartRepo.GetCartIdFromDB(ownerId);
             
             bool needsCart = false;
             if ( cartId == null) 
@@ -74,7 +74,7 @@ namespace HipAndClavicle.Controllers
         {
 
             // Get the cart ID
-            var cartId = CookieUtility.GetCookie();
+            var cartId = CookieUtility.GetShoppingCartCookie();
             string ownerId = GetOwnerId();
 
             // Get the shopping cart using the cart ID

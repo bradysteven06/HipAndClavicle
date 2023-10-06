@@ -21,10 +21,15 @@ namespace HipAndClavicle.UtilityClasses
             return cookieNamePrefix + "CartId";
         }
 
-        // Gets cookie with cartId in it
-        public static string GetCookie()
+        public static string GetShoppingCartCookie()
         {
-            return _contextAccessor.HttpContext.Request.Cookies[shoppingCartCookieName];
+            return GetCookie(shoppingCartCookieName);
+        }
+
+        // Gets cookie with cartId in it
+        public static string GetCookie(string cookieName)
+        {
+            return _contextAccessor.HttpContext.Request.Cookies[cookieName];
         }
 
         // Sets cartId to cookie
@@ -34,7 +39,7 @@ namespace HipAndClavicle.UtilityClasses
         }
 
         // Deletes all cookies with specified cookie name prefix
-        public static void DeleteCookie()
+        public static void DeleteCookies()
         {
             /*var matchingCookies = context.Request.Cookies
                 .Where(cookie => cookie.Key.StartsWith(cookieNamePrefix))
@@ -45,20 +50,21 @@ namespace HipAndClavicle.UtilityClasses
                 _contextAccessor.HttpContext.Response.Cookies.Delete(cookieKey);
             }*/
 
-            var matchingCookies = new List<string>();
+            //var matchingCookies = new List<string>();
 
             foreach (var cookieKey in _contextAccessor.HttpContext.Request.Cookies.Keys)
             {
                 if (cookieKey.StartsWith(cookieNamePrefix, StringComparison.Ordinal))
                 {
-                    matchingCookies.Add(cookieKey);
+                    //matchingCookies.Add(cookieKey);
+                    _contextAccessor.HttpContext.Response.Cookies.Delete(cookieKey);
                 }
             }
 
-            foreach (var matchingCookie in matchingCookies)
+            /*foreach (var matchingCookie in matchingCookies)
             {
                 _contextAccessor.HttpContext.Response.Cookies.Delete(matchingCookie);
-            }
+            }*/
         }
 
         // Deletes shopping cart cookie
