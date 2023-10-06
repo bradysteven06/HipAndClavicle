@@ -44,8 +44,6 @@ builder.Services.AddNotyf(configure =>
 
 // Load configuration from appsettings.json
 builder.Configuration.AddJsonFile("appsettings.json");
-// Register the CookieUtility class with the DI container
-builder.Services.AddScoped<CookieUtility>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -76,6 +74,16 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+// for cookie utility class
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var configuration = services.GetRequiredService<IConfiguration>();
+    var httpContextAccessor = services.GetRequiredService<IHttpContextAccessor>();
+
+    CookieUtility.Initialize(httpContextAccessor, configuration);
+}
 
 #region Seed Data
 using (var scope = app.Services.CreateAsyncScope())

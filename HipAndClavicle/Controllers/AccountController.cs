@@ -1,4 +1,6 @@
-﻿namespace HipAndClavicle.Controllers;
+﻿using HipAndClavicle.UtilityClasses;
+
+namespace HipAndClavicle.Controllers;
 
 [Authorize]
 public class AccountController : Controller
@@ -8,14 +10,16 @@ public class AccountController : Controller
     private readonly INotyfService _toast;
     private readonly IShippingRepo _shippingRepo;
     private readonly IAccountRepo _accountRepo;
+    private readonly IHttpContextAccessor _contextAccessor;
 
-    public AccountController(IServiceProvider services, ApplicationDbContext context)
+    public AccountController(IServiceProvider services, ApplicationDbContext context, IHttpContextAccessor contextAccessor)
     {
         _toast = services.GetRequiredService<INotyfService>();
         _signInManager = services.GetRequiredService<SignInManager<AppUser>>();
         _userManager = _signInManager.UserManager;
         _shippingRepo = services.GetRequiredService<IShippingRepo>();
         _accountRepo = services.GetRequiredService<IAccountRepo>();
+        _contextAccessor = contextAccessor;
     }
 
     public async Task<IActionResult> Index()
@@ -113,7 +117,8 @@ public class AccountController : Controller
         await _signInManager.SignOutAsync();
 
         // Deletes cookie when Logging out
-        //Response.Cookies.Delete(ShoppingCartController.shoppingCartCookieName);
+        CookieUtility.DeleteShoppingCartCookie();
+        //CookieUtility.DeleteCookie();
 
         _toast.Success("You are now signed out, Goodbye!");
         return RedirectToAction("Index", "Home");
